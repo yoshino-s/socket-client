@@ -40,3 +40,5 @@ venv
 
 upload
 static/*
+
+docker-compose.yml

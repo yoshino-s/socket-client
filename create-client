@@ -1,0 +1,21 @@
+#!/usr/bin/env node
+/* eslint-disable @typescript-eslint/no-var-requires */
+const fs = require("fs");
+
+const argv = process.argv.slice(1);
+const num = parseInt(argv[1]);
+if (Number.isNaN(num)) {
+  process.stderr.write(`Usage: ${argv[0]} client-number [base-port=30000]`);
+} else {
+  const basePort = parseInt(argv[2]) || 30000;
+
+  let content = "version: \"3\"\nservices:\n";
+  for (let i = 0; i < num; i++)
+    content += `  socket-${i}:
+    build: .
+    restart: always
+    ports:
+      - ${basePort+i}:3000
+`;
+  fs.writeFileSync("docker-compose.yml", content);
+}

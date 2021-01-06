@@ -1,0 +1,13 @@
+{
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "http.proxy": "http://host:7890/",
+  "http.proxyAuthorization": null,
+  "http.proxyStrictSSL": true,
+  "cSpell.words": [
+    "Backupper",
+    "Exper",
+    "Serfender",
+    "untar"
+  ],
+  "python.pythonPath": "venv/bin/python"
+}

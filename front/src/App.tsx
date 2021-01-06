@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 import React from "react";
 import { makeStyles, createStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -82,7 +83,7 @@ const MessageItem = (props: MessageWithTimestamp) => {
                   </Avatar>
                 }
                 action={
-                  <IconButton aria-label="download" href={`http://localhost:3000/api/download?path=${props.file.tmpFile}&name=${props.file.fileName}`}>
+                  <IconButton aria-label="download" href={`/api/download?path=${props.file.tmpFile}&name=${props.file.fileName}`}>
                     <GetApp/>
                   </IconButton>
                 }
@@ -121,7 +122,7 @@ const Chat = () => {
   const [name, setName] = React.useState("client");
   const [port, setPort] = React.useState(3001);
 
-  const {data} = useSwr<ConnectionInfo>("http://localhost:3000/api/client");
+  const {data} = useSwr<ConnectionInfo>("/api/client");
 
   React.useEffect(() => {
     if (data) {
@@ -130,7 +131,7 @@ const Chat = () => {
   }, [data]);
 
   React.useEffect(() => {
-    const client = new WebSocket("ws://localhost:3000/");
+    const client = new WebSocket(location.origin.replace(/^http/, "ws"));
     client.onopen = () => {
       client.send(JSON.stringify({
         event: "error",
@@ -144,7 +145,7 @@ const Chat = () => {
   }, []);
 
   React.useEffect(() => {
-    const client = new WebSocket("ws://localhost:3000/");
+    const client = new WebSocket(location.origin.replace(/^http/, "ws"));
     client.onopen = () => {
       client.send(JSON.stringify({
         event: "events",
@@ -169,7 +170,7 @@ const Chat = () => {
 
   React.useEffect(() => {
     setHistory([]);
-    const client = new WebSocket("ws://localhost:3000/");
+    const client = new WebSocket(location.origin.replace(/^http/, "ws"));
     client.onopen = () => {
       client.send(JSON.stringify({
         event: "message",
@@ -189,7 +190,7 @@ const Chat = () => {
   const send = () => {
     const form = new URLSearchParams();
     form.set("text", text);
-    fetch("http://localhost:3000/api/send", {
+    fetch("/api/send", {
       method: "POST",
       body: form,
     });
@@ -200,7 +201,7 @@ const Chat = () => {
     if (file) {
       const form = new FormData();
       form.set("file", file);
-      fetch("http://localhost:3000/api/send/file", {
+      fetch("/api/send/file", {
         method: "POST",
         body: form,
       });
@@ -210,11 +211,11 @@ const Chat = () => {
   };
 
   const disconnect = () => {
-    fetch("http://localhost:3000/api/disconnect");
+    fetch("/api/disconnect");
   };
 
   const connect = () => {
-    fetch(`http://localhost:3000/api/connect?host=${encodeURIComponent(host)}&port=${encodeURIComponent(port)}&name=${encodeURIComponent(name)}`);
+    fetch(`/api/connect?host=${encodeURIComponent(host)}&port=${encodeURIComponent(port)}&name=${encodeURIComponent(name)}`);
   };
 
   return (

@@ -46,9 +46,11 @@ export class AppController {
   @Post("send/file")
   @UseInterceptors(FileInterceptor("file"))
   async sendFile(@UploadedFile() file) {
+    console.log(file);
+
     const res = this.socketService.connection;
     if (res && !res.connectionInfo.close) {
-      await res.sendFile(file.path, file.fileName);
+      await res.sendFile(file.path, file.originalname);
       return res.connectionInfo;
     }
     else {

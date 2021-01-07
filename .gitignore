@@ -42,3 +42,5 @@ upload
 static/*
 
 docker-compose.yml
+
+build
